@@ -2,6 +2,8 @@
 bin/
 /db
 .eclipse
+.idea
+activator*
 /lib/
 /logs/
 /modules

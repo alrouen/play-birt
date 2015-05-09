@@ -1,0 +1,4 @@
+May 09, 2015 10:28:08 PM org.eclipse.birt.report.model.parser.ModuleReader readModule
+SEVERE: Line Number:54 Error Code:Error.XMLParserException.SAX_ERROR Exception:org.xml.sax.SAXParseException; lineNumber: 54; columnNumber: 15; The element type "page-header" must be terminated by the matching end-tag "</page-header>". Message:SAX detected an error with the basic XML syntax of the file. 
+May 09, 2015 10:28:08 PM org.eclipse.birt.report.engine.api.impl.ReportEngineHelper getReportDesignHandle
+SEVERE: invalid design file <stream>
