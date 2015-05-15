@@ -13,9 +13,9 @@ object Application extends Controller {
     Ok(views.html.index("GlopGlop"))
   }
 
-  def test(name: String) = Action {
-    Play.resourceAsStream("hello_world.rptdesign").map { input =>
-      val params = Map("name" -> name)
+  def test = Action(parse.json) { request =>
+    Play.resourceAsStream("personScripted.rptdesign").map { input =>
+      val params = Map("JsonDataSource" -> request.body.toString())
       val is = service.BirtPlugin.birt.generateReport(input, PdfReportFormat, params, Map.empty)
       val dataContent: Enumerator[Array[Byte]] = Enumerator.fromStream(is)
       is.close()
@@ -27,3 +27,25 @@ object Application extends Controller {
 
 
 }
+
+/*
+*
+*
+*
+* {"bindings":
+*   [
+*     {
+*       "first_name":"Gyula",
+*       "last_name":"Szabo",
+*       "phone":"2276",
+*       "nationality":"Hungarian",
+*       "address":
+*         [
+*           {"zip_code":"1412","city":"Luxembourg","street":"rue Dante","number":"12"}
+*         ]
+*     }
+*   ]
+* }
+*
+*
+* */

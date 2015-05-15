@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.4.2.v201410272105 Build &lt;4.4.2.v20150217-1805></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <parameters>
+        <scalar-parameter name="JsonDataSource" id="33">
+            <text-property name="promptText">Specify data source JSON string!</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">{"bindings":[{"first_name":"Gyula","last_name":"Szabo","phone":"2276","nationality":"Hungarian","address":[{"zip_code":"1412","city":"Luxembourg","street":"rue Dante","number":"12"}]}]} </value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Address" id="73">
+            <property name="hidden">true</property>
+            <text-property name="promptText">Specify address</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant"></value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="Scripted Data Source" id="44">
+            <method name="open"><![CDATA[dummyObject = new Object();]]></method>
+            <method name="close"><![CDATA[dummyObject = null;]]></method>
+        </script-data-source>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="Person Data Set" id="45">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">first_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">last_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">phone</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">nationality</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">first_name</property>
+                    <text-property name="displayName">First Name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">last_name</property>
+                    <text-property name="displayName">Last Name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">phone</property>
+                    <text-property name="displayName">Phone</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">nationality</property>
+                    <text-property name="displayName">Nationality</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">first_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">last_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">phone</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">nationality</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Scripted Data Source</property>
+            <method name="open"><![CDATA[importPackage(Packages.org.apache.commons.io);
+importPackage(Packages.java.io);
+count =0;]]></method>
+            <method name="fetch"><![CDATA[input = params["JsonDataSource"].value;
+myJSONObject =eval('('+ input +')');
+len = myJSONObject.bindings.length; 
+
+if(count < len){
+	var first_name = myJSONObject.bindings[count].first_name;
+	var last_name = myJSONObject.bindings[count].last_name;
+	var phone = myJSONObject.bindings[count].phone;
+	var nationality = myJSONObject.bindings[count].nationality;
+	
+	
+	row["first_name"]= first_name;
+	row["last_name"]= last_name;
+	row["phone"]= phone;
+	row["nationality"] = nationality;
+	addressString = new String( "{\"address\":[{\"zip_code\":\""+ myJSONObject.bindings[count].address[0].zip_code +"\",\"city\":\""+ myJSONObject.bindings[count].address[0].city +"\",\"street\":\""+ myJSONObject.bindings[count].address[0].street +"\",\"number\":\""+ myJSONObject.bindings[count].address[0].number +"\"}]}");
+	params["Address"].value = addressString;
+	count++;
+	return true;
+}
+	return false;
+]]></method>
+        </script-data-set>
+        <script-data-set name="Address Data Set" id="46">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">0</property>
+                    <property name="name">zip_code</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">city</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">street</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">number</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">zip_code</property>
+                    <text-property name="displayName">ZIP Code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">city</property>
+                    <text-property name="displayName">City</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">street</property>
+                    <text-property name="displayName">Street</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">number</property>
+                    <text-property name="displayName">Number</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">zip_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">city</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">street</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">number</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Scripted Data Source</property>
+            <method name="open"><![CDATA[count = 0;]]></method>
+            <method name="fetch"><![CDATA[input = params["Address"].value;
+myJSONObject =eval('('+ input +')');
+len = myJSONObject.address.length; 
+
+if(count < len){
+	var zip_code = myJSONObject.address[count].zip_code;
+	var city = myJSONObject.address[count].city;
+	var street = myJSONObject.address[count].street;
+	var number = myJSONObject.address[count].number;
+	
+	row["zip_code"]= zip_code;
+	row["city"]= city;
+	row["street"]= street;
+	row["number"] = number;
+	
+	count++;
+	return true;
+}
+	return false;
+]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab-cell" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <label id="9">
+            <property name="backgroundColor">gray</property>
+            <property name="fontSize">12pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="borderBottomStyle">none</property>
+            <property name="borderLeftStyle">none</property>
+            <property name="borderRightStyle">none</property>
+            <property name="borderTopStyle">none</property>
+            <property name="textAlign">center</property>
+            <text-property name="text">PERSON</text-property>
+        </label>
+        <grid name="Person" id="10">
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="dataSet">Person Data Set</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">first_name</property>
+                    <text-property name="displayName">First Name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["first_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">last_name</property>
+                    <text-property name="displayName">Last Name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["last_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">phone</property>
+                    <text-property name="displayName">Phone</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["phone"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">nationality</property>
+                    <text-property name="displayName">Nationality</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["nationality"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="11"/>
+            <column id="12"/>
+            <row id="13">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <cell id="14">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">right</property>
+                    <label id="25">
+                        <text-property name="text">First name:</text-property>
+                    </label>
+                </cell>
+                <cell id="15">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">center</property>
+                    <text-data id="29">
+                        <expression name="valueExpr">row["first_name"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="16">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <cell id="17">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">right</property>
+                    <label id="26">
+                        <text-property name="text">Last name:</text-property>
+                    </label>
+                </cell>
+                <cell id="18">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">center</property>
+                    <text-data id="30">
+                        <expression name="valueExpr">row["last_name"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="19">
+                <property name="borderBottomStyle">solid</property>
+                <property name="borderBottomWidth">thin</property>
+                <cell id="20">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">right</property>
+                    <label id="27">
+                        <text-property name="text">Phone:</text-property>
+                    </label>
+                </cell>
+                <cell id="21">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">center</property>
+                    <text-data id="31">
+                        <expression name="valueExpr">row["phone"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="22">
+                <cell id="23">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">right</property>
+                    <label id="28">
+                        <text-property name="text">Nationality:</text-property>
+                    </label>
+                </cell>
+                <cell id="24">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="textAlign">center</property>
+                    <text-data id="32">
+                        <expression name="valueExpr">row["nationality"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+        </grid>
+        <label id="66">
+            <property name="backgroundColor">#C0C0C0</property>
+            <property name="marginTop">10pt</property>
+            <property name="width">60%</property>
+            <text-property name="text">ADDRESS</text-property>
+        </label>
+        <grid name="Address" id="47">
+            <property name="width">60%</property>
+            <property name="dataSet">Address Data Set</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">zip_code</property>
+                    <text-property name="displayName">ZIP Code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["zip_code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">city</property>
+                    <text-property name="displayName">City</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["city"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">street</property>
+                    <text-property name="displayName">Street</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["street"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">number</property>
+                    <text-property name="displayName">Number</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["number"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="48"/>
+            <column id="49"/>
+            <row id="50">
+                <cell id="51">
+                    <label id="62">
+                        <text-property name="text">ZIP Code:</text-property>
+                    </label>
+                </cell>
+                <cell id="52">
+                    <text-data id="67">
+                        <expression name="valueExpr">row["zip_code"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="53">
+                <cell id="54">
+                    <label id="63">
+                        <text-property name="text">City:</text-property>
+                    </label>
+                </cell>
+                <cell id="55">
+                    <text-data id="68">
+                        <expression name="valueExpr">row["city"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="56">
+                <cell id="57">
+                    <label id="64">
+                        <text-property name="text">Street:	</text-property>
+                    </label>
+                </cell>
+                <cell id="58">
+                    <text-data id="69">
+                        <expression name="valueExpr">row["street"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="59">
+                <cell id="60">
+                    <label id="65">
+                        <text-property name="text">Number:</text-property>
+                    </label>
+                </cell>
+                <cell id="61">
+                    <text-data id="70">
+                        <expression name="valueExpr">row["number"]</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>

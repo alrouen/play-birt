@@ -2,3 +2,8 @@ This is your new Play application
 =================================
 
 This file will be packaged with your application, when using `activator dist`.
+
+Curl to test :
+
+curl -H "Content-Type: application/json" -X POST -d '{"bindings":[{"first_name":"Gyula","last_name":"Szabo","phone":"2276","nationality":"Hungarian","address":[{"zip_code":"1412","city":"Luxembourg","street":"rue Dante","number":"12"}]}]}' http://localhost:9000/test > output.pdf
+
